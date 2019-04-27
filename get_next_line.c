@@ -13,14 +13,16 @@
 //#include "get_next_line.h"
 #include <stdio.h>
 #include <fcntl.h>
-# define BUFF_SIZE 2
+# define BUFF_SIZE 5
 
-static char *after;
 
 char	**buff_cat(char *buffer,char **line)
 {
+	static char *after;
 	int index;
+	int c;
 
+	c = 0;
 	index = 0;
 	while(index++ < BUFF_SIZE)
 	{
@@ -28,16 +30,22 @@ char	**buff_cat(char *buffer,char **line)
 			break ;
 	}
 	printf ("index == %d \n",index);
+//	buffer = ft_strsub(buffer, 0, index);	
+//	*line = strdup(buffer);
+	printf ("line == %s\n",*line);
+	printf ("buffer == %s\n BUFF === %d\n",buffer,BUFF_SIZE);
 	if(index < BUFF_SIZE)
-	{
-		buffer = ft_strsub(buffer, 0, index);
-		printf ("buffer == %s\n",buffer);
-		ft_memcpy(*line, buffer,index);
-		return (line);
+	{	
+		while(index <= BUFF_SIZE)
+		{
+			//ft_memcpy(*line, buffer,index);
+			after[c++] = buffer[index++];
+			printf("after == %s\n",after);
+		}
 	}	
 	//printf ("line == %s\n",*line);
-	buffer[index] = 0;
-	*line = strdup(buffer);
+	//buffer[index] = 0;	
+	//*line = strdup(buffer);
 	printf ("line = %s\n",*line);
 	return (line);
 }
@@ -45,17 +53,31 @@ char	**buff_cat(char *buffer,char **line)
 int		get_next_line(const int fd, char **line)
 {
 	char buffer[BUFF_SIZE + 1];
-	buffer[BUFF_SIZE] = '\0';
+	static char *after;
 	int r;
+	int i;
 
-	//printf ("ret read == %d \n ",(int)read(fd, buffer, BUFF_SIZE));
-	//printf("buffer  == %s\n",buffer);
+	buffer[BUFF_SIZE] = '\0';
+	i = 0;
+	*line = ft_strdup("\0");
+	if(after)
+		*line = ft_strjoin(*line,after);
 	while ((r = read(fd, buffer, BUFF_SIZE)) > 0)
 	{
-		printf("buffer  == %s\n",buffer);
-		buff_cat(buffer,line);
-		printf ("FIN WHILE\n");
+		i = 0;
+		//printf("buffer == %s\n",buffer);
+		while(buffer[i] != '\n' && i < BUFF_SIZE)
+			i++;
+		//printf("index == %d\n",i);
+		*line = ft_strjoin(*line,ft_strsub(buffer, 0, i));
+		//printf("line == %s\n -----------\n",*line);
+		if(i < BUFF_SIZE)
+			break ;
 	}
+	if(i <= BUFF_SIZE)
+		after = ft_strsub(buffer, i, BUFF_SIZE);
+	if(r == -1)
+	printf("after == %s\n",after);
 	return 0;
 }
 
@@ -64,7 +86,6 @@ int main ()
 	//char buufe[6];
 	char *line;
 	int fd = open("test.txt" , O_RDONLY);
-	printf("fd == %d\n",fd);
 	/*while (read(fd, buufe,3) > 0)
 	  {
 	  printf("buffer == %s\n",buufe);
@@ -73,5 +94,11 @@ int main ()
 	  printf("fd == %i \n ret of read == %d \n",fd, ret);
 	  */
 	get_next_line(fd, &line);
-	printf ("line = %s\n",line);
+	printf("line == %s\n",*line);
+	printf("++++++++++2\n");
+	get_next_line(fd, &line);
+	printf("line == %s\n",*line);
+	printf("++++++++++3\n");
+	//get_next_line(fd, &line);
+	//printf ("line = %s\n",line);
 }
