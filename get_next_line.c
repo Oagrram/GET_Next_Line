@@ -5,64 +5,56 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/21 22:22:37 by oagrram           #+#    #+#             */
+/*   Created: 2019/05/02 00:54:43 by oagrram           #+#    #+#             */
+/*   Updated: 2019/05/02 00:55:33 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		get_next_line(const int fd, char **line)
+static void	help(const int fd, char **str, int j, char **line)
 {
-	char buffer[BUFF_SIZE + 1];
-	static char *after, *tmp;
-	int r;
-	int i;
+	char *tmp;
 
-	//buffer[BUFF_SIZE] = '\0';
-	i = 0;
-	//*line = ft_strdup("\0");
-		*line = after ? ft_strdup(after) : ft_strdup("");
-		after ? ft_strdel(&after) : 0;
-	while ((r = read(fd, buffer, BUFF_SIZE)) > 0)
+	if (str[fd][j] == '\n')
 	{
-		i = 0;
-		while(buffer[i] != '\n' && i < BUFF_SIZE)
-			i++;
-		tmp = *line;
-		*line = ft_strjoin(*line,ft_strsub(buffer, 0, i));
-		free(tmp);
-		if(i < BUFF_SIZE)
-			break ;
+		*line = ft_strsub(str[fd], 0, j);
+		tmp = ft_strdup(str[fd] + j + 1);
+		free(str[fd]);
+		str[fd] = tmp;
+		if (str[fd][0] == '\0')
+			ft_strdel(&str[fd]);
 	}
-	if(i <= BUFF_SIZE)
-		after = ft_strsub(buffer, i, BUFF_SIZE);
-	//if(r == -1)
-	return (*line && **line);
+	else if (str[fd][j] == '\0')
+	{
+		*line = ft_strdup(str[fd]);
+		ft_strdel(&str[fd]);
+	}
 }
 
-int main ()
+int			get_next_line(const int fd, char **line)
 {
-	//char buufe[6];
-	char *line;
-	int fd = open("test.txt" , O_RDONLY);
-	int i = 0;
-	/*while (read(fd, buufe,3) > 0)
-	  {
-	  printf("buffer == %s\n",buufe);
-	  }
-	  int ret = read(fd, buufe,8);
-	  printf("fd == %i \n ret of read == %d \n",fd, ret);
-	  */
-	//while(1)
-	//{
-		while(get_next_line(fd, &line) > 0)
-		{
-			printf("%s\n",line);
-			free(line);
-		}
-		
-	//}
-	
-	//get_next_line(fd, &line);
-	//printf ("line = %s\n",line);
+	static char		*str[4863];
+	int				ret;
+	char			buf[BUFF_SIZE + 1];
+	int				j;
+
+	if (!line || read(fd, buf, 0) < 0)
+		return (-1);
+	j = 0;
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	{
+		buf[ret] = '\0';
+		if (str[fd] == NULL)
+			str[fd] = ft_strnew(0);
+		str[fd] = ft_strjoin(str[fd], buf);
+		if (ft_strchr(buf, '\n'))
+			break ;
+	}
+	if (ret == 0 && (str[fd] == NULL || str[fd][0] == '\0'))
+		return (0);
+	while (str[fd][j] != '\n' && str[fd][j] != '\0')
+		j++;
+	help(fd, str, j, line);
+	return (1);
 }
