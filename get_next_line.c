@@ -6,16 +6,20 @@
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 00:54:43 by oagrram           #+#    #+#             */
-/*   Updated: 2019/05/02 00:55:33 by oagrram          ###   ########.fr       */
+/*   Updated: 2019/05/04 20:17:21 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	help(const int fd, char **str, int j, char **line)
+static int	get_line(const int fd, char **str, char **line)
 {
-	char *tmp;
+	char	*tmp;
+	int		j;
 
+	j = 0;
+	while (str[fd][j] != '\n' && str[fd][j] != '\0')
+		j++;
 	if (str[fd][j] == '\n')
 	{
 		*line = ft_strsub(str[fd], 0, j);
@@ -24,12 +28,12 @@ static void	help(const int fd, char **str, int j, char **line)
 		str[fd] = tmp;
 		if (str[fd][0] == '\0')
 			ft_strdel(&str[fd]);
+		return (1);
 	}
-	else if (str[fd][j] == '\0')
-	{
+	if (j > 0)
 		*line = ft_strdup(str[fd]);
-		ft_strdel(&str[fd]);
-	}
+	ft_strdel(&str[fd]);
+	return (j != 0);
 }
 
 int			get_next_line(const int fd, char **line)
@@ -37,24 +41,26 @@ int			get_next_line(const int fd, char **line)
 	static char		*str[4863];
 	int				ret;
 	char			buf[BUFF_SIZE + 1];
-	int				j;
+	char			*to_del;
 
 	if (!line || read(fd, buf, 0) < 0)
 		return (-1);
-	j = 0;
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	ret = 0;
+	if (str[fd] == NULL || NULL == ft_strchr(str[fd], '\n'))
 	{
-		buf[ret] = '\0';
-		if (str[fd] == NULL)
-			str[fd] = ft_strnew(0);
-		str[fd] = ft_strjoin(str[fd], buf);
-		if (ft_strchr(buf, '\n'))
-			break ;
+		while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+		{
+			buf[ret] = '\0';
+			if (str[fd] == NULL)
+				str[fd] = ft_strnew(0);
+			to_del = str[fd];
+			str[fd] = ft_strjoin(str[fd], buf);
+			ft_strdel(&to_del);
+			if (ft_strchr(buf, '\n'))
+				break ;
+		}
 	}
-	if (ret == 0 && (str[fd] == NULL || str[fd][0] == '\0'))
+	if ((ret == 0 && str[fd] == NULL))
 		return (0);
-	while (str[fd][j] != '\n' && str[fd][j] != '\0')
-		j++;
-	help(fd, str, j, line);
-	return (1);
+	return (get_line(fd, str, line));
 }
