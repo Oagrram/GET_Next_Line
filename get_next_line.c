@@ -6,7 +6,7 @@
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 00:54:43 by oagrram           #+#    #+#             */
-/*   Updated: 2019/05/04 20:17:21 by oagrram          ###   ########.fr       */
+/*   Updated: 2019/05/05 03:21:10 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	get_line(const int fd, char **str, char **line)
 
 int			get_next_line(const int fd, char **line)
 {
-	static char		*str[4863];
+	static char		*str[4864];
 	int				ret;
 	char			buf[BUFF_SIZE + 1];
 	char			*to_del;

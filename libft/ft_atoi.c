@@ -3,29 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aymhabib <aymhabib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 21:19:05 by aymhabib          #+#    #+#             */
-/*   Updated: 2019/05/19 01:27:50 by aymhabib         ###   ########.fr       */
+/*   Created: 2019/04/06 21:57:07 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/19 12:52:48 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+static int	as_to_in(const char *str)
 {
-	int	nb;
-	int	sign;
+	int long	res;
 
-	nb = 0;
-	sign = 1;
-	while ((*str >= 9 && *str <= 13) || *str == ' ')
+	res = 0;
+	while (*str)
+	{
+		if (*str >= '0' && *str <= '9')
+			res = res * 10 + *str - '0';
+		else
+			return (res);
 		str++;
-	if (*str == '-' || *str == '+')
-		sign = (*(str++) == '-' ? -1 : 1);
-	while (*str >= '0' && *str <= '9')
-		nb = nb * 10 + *(str++) - '0';
-	if (nb > 2147483647)
-		return (sign == 1 ? -1 : 0);
-	return (sign * nb);
+	}
+	return (res);
+}
+
+int			ft_atoi(const char *str)
+{
+	while (*str)
+	{
+		if (*str == '\t' || *str == '\n' || *str == '\v'
+				|| *str == '\f' || *str == ' ' || *str == '\r')
+			str++;
+		else
+			break ;
+	}
+	if (*str == '+' || *str == '-')
+		str++;
+	if (as_to_in(str) != 0)
+	{
+		if (*(str - 1) == '-')
+			return ((int)as_to_in(str) * -1);
+		return ((int)as_to_in(str));
+	}
+	return (0);
 }

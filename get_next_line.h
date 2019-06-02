@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/02 00:56:06 by oagrram           #+#    #+#             */
-/*   Updated: 2019/05/04 18:32:59 by oagrram          ###   ########.fr       */
+/*   Created: 2019/05/05 12:22:01 by oagrram           #+#    #+#             */
+/*   Updated: 2019/05/05 12:23:15 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # include "libft/libft.h"
-# define BUFF_SIZE 4
+# define BUFF_SIZE 6
 
 int		get_next_line(const int fd, char **line);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aymhabib <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/09 17:55:09 by aymhabib          #+#    #+#             */
-/*   Updated: 2019/04/09 18:36:28 by aymhabib         ###   ########.fr       */
+/*   Created: 2019/04/12 23:47:22 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/14 16:39:31 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,28 @@
 
 char	*ft_strtrim(char const *s)
 {
-	int start;
-	int len;
+	char	*p;
+	int		i;
+	int		j;
+	int		c;
 
+	i = 0;
+	c = 0;
 	if (!s)
 		return (NULL);
-	start = 0;
-	while (s[start] == '\n' || s[start] == '\t' || s[start] == ' ')
-		start++;
-	len = ft_strlen(s) - 1;
-	while (len && (s[len] == '\n' || s[len] == '\t' || s[len] == ' '))
-		len--;
-	return (len - start + 1 < 0 ?
-			ft_strsub(s, start, 0) : ft_strsub(s, start, len - start + 1));
+	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\n')
+		i++;
+	j = ft_strlen(s);
+	j--;
+	while (s[j] == ' ' || s[j] == '\t' || s[j] == '\n')
+		j--;
+	if (j <= 0)
+		return (ft_strdup(""));
+	p = ft_strnew(j - i + 1);
+	if (!p)
+		return (NULL);
+	while (i <= j)
+		p[c++] = s[i++];
+	p[c] = '\0';
+	return (p);
 }

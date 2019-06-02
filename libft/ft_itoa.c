@@ -3,56 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aymhabib <aymhabib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/11 15:53:17 by aymhabib          #+#    #+#             */
-/*   Updated: 2019/04/21 18:45:20 by aymhabib         ###   ########.fr       */
+/*   Created: 2019/04/15 02:30:02 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/19 18:18:06 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_len(long nb)
+char			*ft_itoa(int n)
 {
-	int		len;
+	char		*p;
+	long int	dev;
+	long int	mod;
+	int			i;
 
-	len = 0;
-	if (nb <= 0)
-	{
-		nb = nb * -1;
-		len++;
-	}
-	while (nb > 0)
-	{
-		nb = nb / 10;
-		len++;
-	}
-	return (len);
-}
-
-char			*ft_itoa(int nb)
-{
-	char	*str;
-	long	n;
-	int		i;
-
-	n = nb;
-	i = ft_len(n);
-	if (!(str = (char*)malloc(sizeof(char) * (i + 1))))
+	i = get_int_size(n);
+	dev = n;
+	mod = 0;
+	p = (char *)malloc(i + 1);
+	if (!p)
 		return (NULL);
-	str[i--] = '\0';
+	p[i] = '\0';
 	if (n == 0)
-		str[0] = 48;
+		p[--i] = '0';
+	while (dev != 0)
+	{
+		mod = dev % 10;
+		if (n < 0)
+			mod = mod * -1;
+		p[--i] = mod + 48;
+		dev = dev / 10;
+	}
 	if (n < 0)
-	{
-		str[0] = '-';
-		n = n * -1;
-	}
-	while (n > 0)
-	{
-		str[i] = 48 + (n % 10);
-		n = n / 10;
-		i--;
-	}
-	return (str);
+		p[--i] = '-';
+	return (p);
 }

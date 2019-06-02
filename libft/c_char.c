@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   c_char.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/07 16:02:20 by oagrram           #+#    #+#             */
-/*   Updated: 2019/04/07 16:19:24 by oagrram          ###   ########.fr       */
+/*   Created: 2019/04/19 19:46:07 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/19 19:46:33 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_toupper(int c)
+int		c_char(char const *s, char c)
 {
-	if (ft_isalpha(c))
-	{
-		if (c >= 97 && c <= 122)
-			return (c - 32);
-		return (c);
-	}
-	return (c);
+	int i;
+
+	i = 0;
+	while (s[i] && s[i] != c)
+		i++;
+	return (i);
 }

@@ -3,32 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aymhabib <aymhabib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/20 22:52:46 by aymhabib          #+#    #+#             */
-/*   Updated: 2019/05/20 22:52:49 by aymhabib         ###   ########.fr       */
+/*   Created: 2019/04/16 23:15:10 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/21 05:45:27 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list *head;
-	t_list *tmp;
+	t_list *fraiche;
+	t_list *flist;
 
-	if (!(lst && *f))
+	if (!lst || !f)
 		return (NULL);
-	head = f(lst);
-	tmp = head;
-	if (!head)
+	fraiche = f(lst);
+	if (fraiche == NULL)
 		return (NULL);
+	flist = fraiche;
 	while (lst->next)
 	{
-		lst = lst->next;
-		if (!(tmp->next = f(lst)))
+		if (!(fraiche->next = f(lst->next)))
+		{
+			ft_lstdel(&flist, &ft_del);
 			return (NULL);
-		tmp = tmp->next;
+		}
+		fraiche = fraiche->next;
+		lst = lst->next;
 	}
-	return (head);
+	return (flist);
 }

@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   if_int.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/07 16:02:20 by oagrram           #+#    #+#             */
-/*   Updated: 2019/04/07 16:19:24 by oagrram          ###   ########.fr       */
+/*   Created: 2019/04/19 19:33:38 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/19 19:34:13 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_toupper(int c)
+int		if_int(const char *s1, const char *s2, size_t i, size_t len)
 {
-	if (ft_isalpha(c))
+	int c;
+
+	c = 0;
+	while (i < len && s1[i] && s2[c])
 	{
-		if (c >= 97 && c <= 122)
-			return (c - 32);
-		return (c);
+		if (s1[i] != s2[c])
+			return (0);
+		i++;
+		c++;
 	}
-	return (c);
+	return (s2[c] == '\0');
 }

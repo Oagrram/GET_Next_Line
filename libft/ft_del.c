@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   ft_del.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/07 16:02:20 by oagrram           #+#    #+#             */
-/*   Updated: 2019/04/07 16:19:24 by oagrram          ###   ########.fr       */
+/*   Created: 2019/04/20 00:42:35 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/20 00:47:21 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_toupper(int c)
+void	ft_del(void *content, size_t content_size)
 {
-	if (ft_isalpha(c))
+	if (content)
 	{
-		if (c >= 97 && c <= 122)
-			return (c - 32);
-		return (c);
+		free(content);
+		content_size = 0;
 	}
-	return (c);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aymhabib <aymhabib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oagrram <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/20 22:52:55 by aymhabib          #+#    #+#             */
-/*   Updated: 2019/05/20 22:52:57 by aymhabib         ###   ########.fr       */
+/*   Created: 2019/04/15 20:11:02 by oagrram           #+#    #+#             */
+/*   Updated: 2019/04/16 16:42:09 by oagrram          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,22 @@
 
 t_list	*ft_lstnew(void const *content, size_t content_size)
 {
-	t_list *tmp;
+	t_list *node;
 
-	if (!(tmp = (t_list *)malloc(sizeof(t_list))))
+	node = (t_list *)malloc(sizeof(t_list));
+	if (!node)
 		return (NULL);
-	tmp->next = NULL;
-	if (!content)
-	{
-		tmp->content = NULL;
-		tmp->content_size = 0;
-		return (tmp);
-	}
-	if (!(tmp->content = malloc(content_size)))
-	{
-		free(tmp);
+	node->content = (void *)malloc(content_size);
+	if (!node->content)
 		return (NULL);
+	node->next = NULL;
+	if (content == NULL)
+	{
+		node->content = NULL;
+		node->content_size = 0;
+		return (node);
 	}
-	ft_memcpy(tmp->content, content, content_size);
-	tmp->content_size = content_size;
-	return (tmp);
+	ft_memcpy(node->content, content, content_size);
+	node->content_size = content_size;
+	return (node);
 }
